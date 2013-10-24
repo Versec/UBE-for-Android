@@ -73,10 +73,11 @@ public class MainActivity extends Activity {
 				int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 				int level = -1;
 				if (rawlevel >= 0 && scale > 0) {
-					  level = (rawlevel * 100) / scale;}
+					level = (rawlevel * 100) / scale;
+				}
 				batteryLevel = time.format3339(false).getBytes() + " | Current battery level" + level + "%"; } };
-				  IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-				  registerReceiver(batteryLevelReceiver, batteryLevelFilter);
+				IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+				registerReceiver(batteryLevelReceiver, batteryLevelFilter);
 	}});
 	}
 	
