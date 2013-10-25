@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.ActivityInfo;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -29,7 +30,7 @@ public class MainActivity extends Activity {
 	
 	String filename;
 	String batteryLevel;
-	FileOutputStream outputStream;
+	public FileOutputStream outputStream;
 	Context context;
 	Time time = new Time();
 
@@ -37,28 +38,16 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		setup();
+		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		mainButton = (Button) findViewById(R.id.mainButton);
-		 
+		setup();
 		mainButton.setOnClickListener(new OnClickListener() {
-			
+		
 			  @Override
 			  public void onClick(View arg0) {
 			     Toast.makeText(getApplicationContext(), "Button is clicked", Toast.LENGTH_LONG).show();
 			     
-			     try {
-			    	 time.setToNow();
-			    	 filename = "UBE_" + time.format3339(false);
-			    	 
-			    	  outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-			    	  outputStream.write(("Starting test at " + time.format3339(false)).getBytes());
-			    	  
-			    	 batteryLevel(true);
-			    	  outputStream.close();
-			    	} catch (Exception e) {
-			    	  e.printStackTrace();
-			    	}
-			     
+			     new EatBattery(getApplicationContext()).execute();			     
 			  }
 			  
 	
@@ -85,14 +74,19 @@ public class MainActivity extends Activity {
 	 * Initial setup if a Settings file is not found.
 	 * If a SharedPreferences file called "Settings" does not exist, the method will create one with some default values.
 	 */
-	private void setup (){
-		if(settings.contains("use_All")){
+	public void setup (){
+		settings = getSharedPreferences(SETTINGS_FILE, 0);
+		if(settings.contains("use_All") == true){
 			Log.d("SETUP", "settings found");
 		}
+		
 		else {
-			SharedPreferences settings = getSharedPreferences(SETTINGS_FILE, 0);
+			
 			Editor editor = settings.edit();
-			editor.putBoolean("use_All", true);
+			editor.putBoolean("USE_All", true);
+			editor.putBoolean("USE_WIFI", true);
+			editor.putInt("MODE_WIFI", 1);
+			editor.putBoolean("USE_BLUE", true);
 			editor.commit();
 		}
 	}
