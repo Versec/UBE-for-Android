@@ -13,8 +13,8 @@
         <item>High performance mode</item>
     </string-array>
     <string-array name="CPU_array">
-        <item>1 algorithm</item>
-        <item>2 algorithm</item>
+        <item>Bellard\'s algorithm</item>
+        <item>Chudnovsky\'s algorithm</item>
     </string-array>
 
 </resources>
