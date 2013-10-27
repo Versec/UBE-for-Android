@@ -1,6 +1,8 @@
 package com.project.uselessbatteryeater;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Map;
 
 import android.os.BatteryManager;
 import android.os.Bundle;
@@ -23,10 +25,12 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
+	private static final String TAG = MainActivity.class.getName();
 	
 	private Button mainButton;
 	public static final String SETTINGS_FILE = "Settings";
 	SharedPreferences settings;
+	Map <String, ?> settingsList;
 	
 	String filename;
 	String batteryLevel;
@@ -38,6 +42,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		settings = getSharedPreferences(SETTINGS_FILE, 0);
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		mainButton = (Button) findViewById(R.id.mainButton);
 		setup();
@@ -46,7 +51,7 @@ public class MainActivity extends Activity {
 			  @Override
 			  public void onClick(View arg0) {
 			     Toast.makeText(getApplicationContext(), "Button is clicked", Toast.LENGTH_LONG).show();
-			     
+			     turnOnComponents ();
 			     new EatBattery(getApplicationContext()).execute();			     
 			  }
 			  
@@ -54,7 +59,7 @@ public class MainActivity extends Activity {
 			  /**
 			   * Checks the battery level of the phone
 			   */
-	private void batteryLevel(boolean getTime) {
+	private void batteryLevel() {
 		BroadcastReceiver batteryLevelReceiver = new BroadcastReceiver() {
 			public void onReceive(Context context, Intent intent) {
 				context.unregisterReceiver(this);
@@ -67,28 +72,55 @@ public class MainActivity extends Activity {
 				batteryLevel = time.format3339(false).getBytes() + " | Current battery level" + level + "%"; } };
 				IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 				registerReceiver(batteryLevelReceiver, batteryLevelFilter);
-	}});
+	}
+	});
 	}
 	
 	/**
 	 * Initial setup if a Settings file is not found.
 	 * If a SharedPreferences file called "Settings" does not exist, the method will create one with some default values.
 	 */
-	public void setup (){
-		settings = getSharedPreferences(SETTINGS_FILE, 0);
+	public void setup (){			
+		try{
+		File f = new File( //context.getFilesDir().getPath() + SETTINGS_FILE + ".xml");
+				"/data/data/com.project.uselessbatteryeater/shared_prefs/" + SETTINGS_FILE + ".xml");
+				if (f.exists())
+				    Log.d("TAG", "SharedPreferences "+ SETTINGS_FILE + ".xml exists");
+				else
+				    Log.d("TAG", "SharedPreferences "+ SETTINGS_FILE + ".xml DOES NOT exist. Creating a default one");
+					Editor editor = settings.edit();
+					//editor.putBoolean("USE_All", true);
+					editor.putBoolean("USE_WIFI", true);
+					editor.putInt("MODE_WIFI", 1);
+					editor.putBoolean("USE_BLUE", true);
+					editor.putBoolean("USE_RADIO", true);
+					editor.putInt("LEVEL_BRIGHTNESS",-1);
+					editor.putBoolean("USE_CPU", true);
+					editor.putInt("MODE_CPU", 0);
+					editor.commit();
+				
+		} catch (NullPointerException NPE){
+			Log.d("TAG", "file does not exist. Creating new file");
+			
+			
+		}
+		
+		/*settings = getSharedPreferences(SETTINGS_FILE, 0);
 		if(settings.contains("use_All") == true){
-			Log.d("SETUP", "settings found");
+			Log.d(TAG, "settings found");
+			Toast.makeText(getApplicationContext(), "SETTINGS FOUND", Toast.LENGTH_LONG).show();
 		}
 		
 		else {
-			
+			Log.d(TAG, "settings NOT found");
+			/*Toast.makeText(getApplicationContext(), "SETTINGS NOT FOUND", Toast.LENGTH_LONG).show();
 			Editor editor = settings.edit();
 			editor.putBoolean("USE_All", true);
 			editor.putBoolean("USE_WIFI", true);
 			editor.putInt("MODE_WIFI", 1);
 			editor.putBoolean("USE_BLUE", true);
 			editor.commit();
-		}
+		}*/
 	}
 		
 	
@@ -107,6 +139,11 @@ public class MainActivity extends Activity {
         default:
         return super.onOptionsItemSelected(item);
         }
+	}
+	
+	private void turnOnComponents (){
+		settings = getSharedPreferences(SETTINGS_FILE, 0);
+		settingsList = settings.getAll();
 	}
 
 }

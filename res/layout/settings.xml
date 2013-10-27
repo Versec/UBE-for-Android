@@ -1,28 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:inflatedId="@+id/list"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <CheckBox
-        android:id="@+id/useALL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="Use all components" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/list"
+        android:orientation="vertical" >
 
-    <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="Use Wi-fi" />
-
-        <Spinner
-            android:id="@+id/spinner1"
+        <CheckBox
+            android:id="@+id/checkBox_Wifi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_margin="5dp"
+            android:checked="true"
+            android:text="Use Wi-fi" />
 
-</LinearLayout>
+        <Spinner
+            android:id="@+id/spinner_Wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:entries="@array/wifi_array"
+            android:prompt="@string/wifi_prompt" />
+
+        <CheckBox
+            android:id="@+id/checkBox_Bluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:checked="true"
+            android:text="Use Bluetooth" />
+
+        <CheckBox
+            android:id="@+id/checkBox_Radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:checked="true"
+            android:text="Use Radio" />
+
+        <TextView
+            android:id="@+id/textView_Brightness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="Select Screen Brightness"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <SeekBar
+            android:id="@+id/seekBar_Brigthness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" />
+
+        <CheckBox
+            android:id="@+id/checkBox_CPU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:checked="true"
+            android:text="Use CPU Benchmark" />
+
+        <Spinner
+            android:id="@+id/spinner_CPU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:entries="@array/CPU_array"
+            android:prompt="@string/CPU_prompt" />
+    </LinearLayout>
+
+</ScrollView>

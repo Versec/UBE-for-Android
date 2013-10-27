@@ -4,5 +4,17 @@
     <string name="app_name">Useless Battery Eater</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="wifi_prompt">Choose Wi-fi mode:</string>
+    <string name="CPU_prompt">Choose CPU Benchmark:</string>
+    
+    <string-array name="wifi_array">
+        <item>Silent mode</item>
+        <item>Normal mode</item>
+        <item>High performance mode</item>
+    </string-array>
+    <string-array name="CPU_array">
+        <item>1 algorithm</item>
+        <item>2 algorithm</item>
+    </string-array>
 
 </resources>
